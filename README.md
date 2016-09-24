@@ -137,13 +137,13 @@ Installation
 
 You can install this library using `npm`:
 
-    npm install --save glued-store
+    $ npm install --save glued-store
 
 To run the server you can install it with the `-g` flag and then run the
 `glued-store` command:
 
-    npm install -g glued-store
-    glued-store
+    $ npm install -g glued-store
+    $ glued-store
 
 The server will run by default on port `9210` and connect to AMQP and RethinkDB
 on the local machine. To change these options you can use the environment:
