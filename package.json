@@ -1,0 +1,44 @@
+{
+  "name": "glued-store",
+  "version": "0.1.0",
+  "description": "Versatile interface for storing objects through HTTP or AMQP.",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "glued-data-layer": "^0.1.2",
+    "glued-message-bus": "^0.1.2"
+  },
+  "devDependencies": {
+    "mocha": "^3.0.1",
+    "sinon": "^1.17.5",
+    "supertest": "^2.0.0"
+  },
+  "scripts": {
+    "test": "node node_modules/.bin/mocha --recursive test/"
+  },
+  "bin": {
+    "glued-store": "bin/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ggioffreda/glued-store.git"
+  },
+  "keywords": [
+    "glued",
+    "gluedjs",
+    "glued-js",
+    "store",
+    "objects",
+    "http",
+    "rest",
+    "api",
+    "amqp"
+  ],
+  "author": "Giovanni Gioffreda <giovanni.gioffreda@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ggioffreda/glued-store/issues"
+  },
+  "homepage": "https://github.com/ggioffreda/glued-store#readme"
+}
