@@ -13,9 +13,17 @@ const http = require('http'),
   dataLayer = new dl.DataLayer(dlConf);
 
 messageBus.connectModule(function (err, messageBusChannel) {
-  if (err) throw err;
+  if (err) {
+    console.error('Cannot connect to the AMQP server. Try installing and running RabbitMQ.');
+    throw err;
+  }
+
   dataLayer.connectModule(function (err, dataLayer) {
-    if (err) throw err;
+    if (err) {
+      console.error('Cannot connect to RethinkDB. Check that it is installed and running.');
+      throw err;
+    }
+
     const app = express(),
       m = require('../src/model'),
       model = new m.StoreModel(dataLayer),
