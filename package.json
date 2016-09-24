@@ -1,7 +1,7 @@
 {
   "name": "glued-store",
   "version": "0.1.2",
-  "description": "Versatile interface for storing objects through HTTP or AMQP.",
+  "description": "Simple interface for storing objects through HTTP or AMQP.",
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.15.2",

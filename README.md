@@ -1,12 +1,52 @@
 GluedJS - Store
 ===============
 
-Versatile interface for storing objects through HTTP or AMQP.
+Simple interface for storing objects through HTTP or AMQP.
 
 [![Build Status](https://travis-ci.org/ggioffreda/glued-store.svg?branch=master)](https://travis-ci.org/ggioffreda/glued-store)
 
 Usage
 -----
+
+This can be used as a standalone library or server for easily storing data into
+RethinkDB from different sources.
+
+**Example: Using Logstash to centralise your logs into a RethinkDB database**
+
+To store your logs using [Logstash](https://www.elastic.co/products/logstash) you could
+configure Logstash it like so:
+
+
+```
+input {
+    file {
+        path => "/var/log/**/*.log"
+        start_position => beginning
+        ignore_older => 0
+    }
+}
+
+output {
+    rabbitmq {
+        exchange => 'message_bus'
+        exchange_type => 'topic'
+        key => 'logstash.log.var.post.store'
+        host => '127.0.0.1'
+    }
+}
+```
+
+**GluedJS entry point**
+
+This is also the main entry point for GluedJS micro services. Every processor in a way
+or another listens for object events on the message bus and performs additional
+operations accordingly. There are processors that scan the objects and save the
+information collected, others that send texts or notifications if the stored object
+is recognised to be a message, others that logs everything that goes on between the
+users and the store.
+
+Interfaces
+----------
 
 To store objects there are two different interfaces available: an HTTP REST API
 with POST, PUT, PATCH, DELETE and GET methods and an AMQP interface thanks to a 
