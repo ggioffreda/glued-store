@@ -51,6 +51,30 @@ Other methods:
   sends a message with topic *store.{domain}.{type}.type.created*. The message
   contains a JSON encoded object with two properties, domain and type.
 
+Examples:
+
+    $ curl --request PUT \
+        --url http://127.0.0.1:9210/glued/benchmark
+
+    $ curl --request POST \
+        --url http://127.0.0.1:9210/glued/benchmark \
+        --header 'content-type: application/json' \
+        --data '{"payload":"test payload mesage","counter":123}'
+    
+    $ curl --request PUT \
+        --url http://127.0.0.1:9210/glued/benchmark/f4b9fc30-7f87-4f4a-9987-5389e19cb1a0 \
+        --header 'content-type: application/json' \
+        --data '{"payload":"test payload mesage","counter":123}'
+    
+    $ curl --request PATCH \
+        --url http://127.0.0.1:9210/glued/benchmark/f4b9fc30-7f87-4f4a-9987-5389e19cb1a0 \
+        --header 'content-type: application/json' \
+        --data '{"items":[{"action":"update","patch":{"payload":"test payload mesage","counter":234}}]}'
+    
+    $ curl --request DELETE \
+        --url http://127.0.0.1:9210/glued/benchmark/f4b9fc30-7f87-4f4a-9987-5389e19cb1a0 \
+        --header 'content-type: application/json'
+
 ### AMQP API
 
 Main methods:
@@ -93,10 +117,18 @@ const MessageBus = require('glued-message-bus').MessageBus,
 
 mb.connectModule(function (err, messageBusChannel) {
   if (err) throw err;
+
   messageBusChannel.publish('my_package.music.song.post', {
     artist: 'Led Zeppelin',
     title: 'Stariway To Heaven'
   });
+  
+  messageBusChannel.publish('my_package.music.song.a9d71caa-b946-4d0b-a5fb-3d95a6f0a3f1.put', {
+    artist: 'Led Zeppelin',
+    title: 'Whole Lotta Love'
+  });
+  
+  messageBusChannel.publish('my_package.music.song.a9d71caa-b946-4d0b-a5fb-3d95a6f0a3f1.delete', {});
 });
 ```
 
