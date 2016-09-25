@@ -1,7 +1,6 @@
 const assert = require('assert'),
     sinon = require('sinon'),
-    dl = require('glued-data-layer'),
-    dataLayer = new dl.DataLayer(),
+    dataLayer = require('glued-common').dataLayer,
     m = require('../src/model'),
     p = require('../src/processor'),
     testDatabase = 'test',
