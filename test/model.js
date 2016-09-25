@@ -2,7 +2,6 @@ const assert = require('assert'),
     sinon = require('sinon'),
     express = require('express'),
     m = require('../src/model'),
-    dl = require('glued-data-layer'),
     testDatabase = 'test',
     testTable = 'test_table';
 
@@ -13,7 +12,7 @@ var dataLayer = null,
 describe('StoreModel', function () {
 
     before(function (done) {
-        dataLayer = new dl.DataLayer();
+        dataLayer = require('glued-common').dataLayer;
         dataLayer.connectModule(function (err, data) {
             connectionError = err;
             model = new m.StoreModel(data);
