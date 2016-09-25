@@ -190,15 +190,18 @@ on the local machine. To change these options you can use the environment:
 
 - **GLUED_STORE_PORT**: the number of the port to use, default `9210`;
 
-- **GLUED_STORE_HOST**: the host to bind the server to, default `127.0.0.1`;
+- **GLUED_STORE_HOST**: the host to bind the server to, default `127.0.0.1`.
 
-- **GLUED_STORE_AMQP**: the URI of the AMQP server, default to 
-  `amqp://localhost`;
+The following are inherited from
+[GluedJS - Common Utilities](https://github.com/ggioffreda/glued-common), check its
+documentation for more information:
+
+- **GLUED_AMQP**: the URI of the AMQP server, default to `amqp://localhost`;
   
-- **GLUED_STORE_BUS**: the name of the AMQP exchange, default to 
+- **GLUED_MESSAGE_BUS**: the name of the AMQP exchange, default to 
   `glued_message_bus`;
   
-- **GLUED_STORE_RETHINKDB**: the path to a JS/JSON file holding the configuration
+- **GLUED_RETHINKDB**: the path to a JS/JSON file holding the configuration
   for RethinkDB, default to an empty configuration `{}`.
 
 Example:

@@ -3,14 +3,9 @@
 const http = require('http'),
   bodyParser = require('body-parser'),
   express = require('express'),
-  mb = require('glued-message-bus'),
-  messageBus = new mb.MessageBus(
-    process.env.GLUED_STORE_AMQP || 'amqp://localhost',
-    process.env.GLUED_STORE_BUS || 'glued_message_bus'
-  ),
-  dl = require('glued-data-layer'),
-  dlConf = process.env.GLUED_STORE_RETHINKDB ? require(process.env.GLUED_STORE_RETHINKDB) : {},
-  dataLayer = new dl.DataLayer(dlConf);
+  glued = require('glued-common'),
+  messageBus = glued.messageBus,
+  dataLayer = glued.dataLayer;
 
 messageBus.connectModule(function (err, messageBusChannel) {
   if (err) {
