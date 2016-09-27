@@ -179,22 +179,24 @@ You can install this library using `npm`:
 
     $ npm install --save glued-store
 
-To run the server you can install it with the `-g` flag and then run the
-`glued-store` command:
+To run the services you can install the module with the `-g` flag and then run the
+`glued-store-http` and `glued-store-amqp` commands:
 
     $ npm install -g glued-store
-    $ glued-store
+    $ glued-store-http
+    $ glued-store-amqp
 
-The server will run by default on port `9210` and connect to AMQP and RethinkDB
-on the local machine. To change these options you can use the environment:
+The HTTP server will run by default on port `9210`. Both services will connect to 
+AMQP and RethinkDB on the local machine. To change these options you can use the
+environment.
+
+To change host and/or port for the HTTP service:
 
 - **GLUED_STORE_PORT**: the number of the port to use, default `9210`;
 
 - **GLUED_STORE_HOST**: the host to bind the server to, default `127.0.0.1`.
 
-The following are inherited from
-[Glue Common Utilities](https://github.com/ggioffreda/glued-common), check its
-documentation for more information:
+To change the configuration for AMQP and/or RethinkDB:
 
 - **GLUED_AMQP**: the URI of the AMQP server, default to `amqp://localhost`;
   
@@ -203,11 +205,17 @@ documentation for more information:
   
 - **GLUED_RETHINKDB**: the path to a JS/JSON file holding the configuration
   for RethinkDB, default to an empty configuration `{}`.
+  
+The above are inherited from
+[Glue Common Utilities](https://github.com/ggioffreda/glued-common), check its
+documentation for more information.
 
 Example:
 
     $ GLUE_STORE_PORT=8080 GLUE_STORE_AMQP=amqp://1.2.3.4 \
-        GLUE_STORE=/path/to/rethinkdb.conf.json glued-store
+        GLUE_STORE=/path/to/rethinkdb.conf.json glued-store-http
+    $ GLUE_STORE_PORT=8080 GLUE_STORE_AMQP=amqp://1.2.3.4 \
+        GLUE_STORE=/path/to/rethinkdb.conf.json glued-store-amqp
 
 Test
 ----
