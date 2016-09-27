@@ -104,7 +104,7 @@ function StoreProcessor() {
         return function (key, rawMessage, cb) {
             if (null === key) {
               // do nothing
-              cb();
+              return cb();
             }
             return consumer(key.split('.'), JSON.parse(rawMessage.toString()), cb);
         };
