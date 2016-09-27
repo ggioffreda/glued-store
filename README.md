@@ -212,10 +212,10 @@ documentation for more information.
 
 Example:
 
-    $ GLUE_STORE_PORT=8080 GLUE_STORE_AMQP=amqp://1.2.3.4 \
-        GLUE_STORE=/path/to/rethinkdb.conf.json glued-store-http
-    $ GLUE_STORE_PORT=8080 GLUE_STORE_AMQP=amqp://1.2.3.4 \
-        GLUE_STORE=/path/to/rethinkdb.conf.json glued-store-amqp
+    $ GLUE_STORE_PORT=8080 GLUE_AMQP=amqp://1.2.3.4 \
+        RETHINKDB=/path/to/rethinkdb.conf.json glued-store-http
+    $ GLUE_AMQP=amqp://1.2.3.4 \
+        RETHINKDB=/path/to/rethinkdb.conf.json glued-store-amqp
 
 Test
 ----
