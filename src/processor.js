@@ -102,6 +102,10 @@ function StoreProcessor() {
 
     var _filterKeyAndMessage = function (consumer) {
         return function (key, rawMessage, cb) {
+            if (null === key) {
+              // do nothing
+              cb();
+            }
             return consumer(key.split('.'), JSON.parse(rawMessage.toString()), cb);
         };
     };
