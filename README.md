@@ -1,5 +1,5 @@
-GluedJS - Store
-===============
+Glue - Store
+============
 
 Simple interface for storing objects through HTTP or AMQP.
 
@@ -36,9 +36,9 @@ output {
 }
 ```
 
-**GluedJS entry point**
+**Glue entry point**
 
-This is also the main entry point for GluedJS micro services. Every processor in a way
+This is also the main entry point for Glue ecosystems. Every processor in a way
 or another listens for object events on the message bus and performs additional
 operations accordingly. There are processors that scan the objects and save the
 information collected, others that send texts or notifications if the stored object
@@ -193,7 +193,7 @@ on the local machine. To change these options you can use the environment:
 - **GLUED_STORE_HOST**: the host to bind the server to, default `127.0.0.1`.
 
 The following are inherited from
-[GluedJS - Common Utilities](https://github.com/ggioffreda/glued-common), check its
+[Glue Common Utilities](https://github.com/ggioffreda/glued-common), check its
 documentation for more information:
 
 - **GLUED_AMQP**: the URI of the AMQP server, default to `amqp://localhost`;

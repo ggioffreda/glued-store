@@ -23,7 +23,10 @@ describe('StoreProcessor', function () {
 
             mockMBChannel = sinon.stub({ publish: function () { }, subscribe: function () { } });
             model = new m.StoreModel(dataLayer);
-            processor = new p.StoreProcessor(model, mockMBChannel);
+            processor = new p.StoreProcessor();
+            processor._channel = mockMBChannel;
+            processor._model = model;
+
             processor.subscribeHandlers();
 
             done();
@@ -83,7 +86,9 @@ describe('StoreProcessor', function () {
 
             mockMBChannel = { publish: publishSpy };
             model = new m.StoreModel(dataLayer);
-            processor = new p.StoreProcessor(model, mockMBChannel);
+            processor = new p.StoreProcessor();
+            processor._channel = mockMBChannel;
+            processor._model = model;
         }
 
         it('should create a new type, and send a message to the exchange', function (done) {

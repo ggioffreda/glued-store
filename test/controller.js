@@ -29,7 +29,9 @@ describe('StoreController', function () {
             mockMBChannel = { publish: sinon.stub() };
             model = new m.StoreModel(dataLayer);
             expressStub = { Router: sinon.stub().returns(express.Router()) };
-            controller = new c.StoreController(expressStub, model, mockMBChannel);
+            controller = new c.StoreController(expressStub);
+            controller._channel = mockMBChannel;
+            controller._model = model;
 
             app = express();
             app.use(bodyParser.json());

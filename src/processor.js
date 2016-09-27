@@ -1,6 +1,27 @@
-function StoreProcessor(model, messageBus) {
-    this._model = model;
-    this._channel = messageBus;
+const StoreModel = require('./model').StoreModel;
+
+function StoreProcessor() {
+    this._model = null;
+    this._channel = null;
+
+    this.getName = function () {
+      return 'store-amqp';
+    };
+
+    this.getState = function () {
+      return {};
+    };
+
+    this.requires = function (dependency) {
+      return ['message-bus','data-layer'].indexOf(dependency) > -1;
+    };
+
+    this.setUp = function (dependencies) {
+      this._channel = dependencies['message-bus'];
+      this._model = new StoreModel(dependencies['data-layer']);
+
+      this.subscribeHandlers();
+    }.bind(this);
 
     this.putTypeHandler = function (topicKeys, message, cb) {
         const domain = topicKeys[1],

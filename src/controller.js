@@ -1,6 +1,41 @@
-function StoreController(express, model, messageBus) {
-    this._model = model;
+const http = require('http'),
+  bodyParser = require('body-parser'),
+  StoreModel = require('./model').StoreModel;
+
+function StoreController(express) {
+    express = express || require('express');
+    this._model = null;
+    this._channel = null;
+    this._server = null;
     this._router = null;
+    this._state = {};
+
+    this.getName = function () {
+      return 'store-http';
+    };
+
+    this.getState = function () {
+      return this._state;
+    }.bind(this);
+
+    this.requires = function (dependency) {
+      return ['message-bus','data-layer'].indexOf(dependency) > -1;
+    };
+
+    this.setUp = function (dependencies) {
+      this._channel = dependencies['message-bus'];
+      this._model = new StoreModel(dependencies['data-layer']);
+
+      this._app = express();
+      this._app.use(bodyParser.json());
+      this._app.use('/', this.getRouter());
+
+      this._state.port = parseInt(process.env.GLUED_STORE_PORT || 9210);
+      this._state.host = process.env.GLUED_STORE_HOST || '127.0.0.1';
+
+      this._server = http.createServer(this._app);
+      this._server.listen(this._state.port, this._state.host);
+    }.bind(this);
 
     this.putTypeAction = function (req, res) {
         const domain = req.params.objectDomain,
@@ -83,11 +118,11 @@ function StoreController(express, model, messageBus) {
         }
 
         return this._router;
-    };
+    }.bind(this);
 
     var _publishMessage = function (domain, type, action, document) {
-        messageBus.publish([ 'store', domain, type, action ].join('.'), new Buffer(JSON.stringify(document)));
-    };
+        this._channel.publish([ 'store', domain, type, action ].join('.'), new Buffer(JSON.stringify(document)));
+    }.bind(this);
 
     var _postOrPutObject = function (req, res, document, model) {
         const domain = req.params.objectDomain,
