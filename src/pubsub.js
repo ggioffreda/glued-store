@@ -5,7 +5,7 @@ function StorePubSub () {
   this._channel = null
 
   this.getName = function () {
-    return 'store-amqp'
+    return 'store-pubsub'
   }
 
   this.getState = function () {
