@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const StoreController = require('../src/controller').StoreController,
-  ServiceManager = require('glued-common').ServiceManager,
-  manager = new ServiceManager();
+const StoreController = require('../src/controller').StoreController
+const ServiceManager = require('glued-common').ServiceManager
+const manager = new ServiceManager()
 
-manager.load(new StoreController());
+manager.load(new StoreController())
