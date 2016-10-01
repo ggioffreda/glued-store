@@ -2,7 +2,7 @@ const assert = require('assert')
 const sinon = require('sinon')
 const dataLayer = require('glued-common').dataLayer
 const m = require('../src/model')
-const p = require('../src/processor')
+const p = require('../src/pubsub')
 const testDatabase = 'test'
 const testTable = 'test_table'
 
@@ -17,7 +17,7 @@ const beforeEach = mocha.beforeEach
 const it = mocha.it
 const after = mocha.after
 
-describe('StoreProcessor', function () {
+describe('StorePubSub', function () {
   beforeEach(function (done) {
     dataLayer.connectModule(function (err, dataLayer) {
       if (err) {
@@ -28,7 +28,7 @@ describe('StoreProcessor', function () {
 
       mockMBChannel = sinon.stub({ publish: function () { }, subscribe: function () { } })
       model = new m.StoreModel(dataLayer)
-      processor = new p.StoreProcessor()
+      processor = new p.StorePubSub()
       processor._channel = mockMBChannel
       processor._model = model
 
@@ -91,7 +91,7 @@ describe('StoreProcessor', function () {
 
       mockMBChannel = { publish: publishSpy }
       model = new m.StoreModel(dataLayer)
-      processor = new p.StoreProcessor()
+      processor = new p.StorePubSub()
       processor._channel = mockMBChannel
       processor._model = model
     }

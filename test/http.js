@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const dataLayer = require('glued-common').dataLayer
 const m = require('../src/model')
 const express = require('express')
-const c = require('../src/controller')
+const c = require('../src/http')
 const testDatabase = 'test'
 const testTable = 'test_table'
 const request = require('supertest')
@@ -22,7 +22,7 @@ const beforeEach = mocha.beforeEach
 const it = mocha.it
 const after = mocha.after
 
-describe('StoreController', function () {
+describe('StoreHttp', function () {
   beforeEach(function (done) {
     dataLayer.connectModule(function (err, dataLayer) {
       if (err) {
@@ -34,7 +34,7 @@ describe('StoreController', function () {
       mockMBChannel = { publish: sinon.stub() }
       model = new m.StoreModel(dataLayer)
       expressStub = { Router: sinon.stub().returns(express.Router()) }
-      controller = new c.StoreController(expressStub)
+      controller = new c.StoreHttp(expressStub)
       controller._channel = mockMBChannel
       controller._model = model
 

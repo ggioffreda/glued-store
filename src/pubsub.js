@@ -1,6 +1,6 @@
 const StoreModel = require('./model').StoreModel
 
-function StoreProcessor () {
+function StorePubSub () {
   this._model = null
   this._channel = null
 
@@ -133,4 +133,4 @@ function StoreProcessor () {
   }
 }
 
-exports.StoreProcessor = StoreProcessor
+exports.StorePubSub = StorePubSub

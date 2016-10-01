@@ -1,3 +1,3 @@
-module.exports.StoreController = require('./src/controller').StoreController
+module.exports.StoreHttp = require('./src/http').StoreHttp
 module.exports.StoreModel = require('./src/model').StoreModel
-module.exports.StoreProcessor = require('./src/processor').StoreProcessor
+module.exports.StorePubSub = require('./src/pubsub').StorePubSub

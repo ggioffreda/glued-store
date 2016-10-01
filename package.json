@@ -22,7 +22,7 @@
   },
   "bin": {
     "glued-store-http": "bin/service-http.js",
-    "glued-store-amqp": "bin/service-amqp.js"
+    "glued-store-pubsub": "bin/service-pubsub.js"
   },
   "repository": {
     "type": "git",

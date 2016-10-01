@@ -2,7 +2,7 @@ const http = require('http')
 const bodyParser = require('body-parser')
 const StoreModel = require('./model').StoreModel
 
-function StoreController (express) {
+function StoreHttp (express) {
   express = express || require('express')
   this._model = null
   this._channel = null
@@ -152,4 +152,4 @@ function StoreController (express) {
   }
 }
 
-exports.StoreController = StoreController
+exports.StoreHttp = StoreHttp

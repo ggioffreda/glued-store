@@ -1,7 +1,7 @@
 Glue - Store
 ============
 
-Simple interface for storing objects through HTTP or AMQP.
+Simple interface for storing objects through HTTP, Pub-Sub or RPC.
 
 [![Build Status](https://travis-ci.org/ggioffreda/glued-store.svg?branch=master)](https://travis-ci.org/ggioffreda/glued-store)
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
@@ -39,9 +39,9 @@ output {
 
 **Glue entry point**
 
-This is also the main entry point for Glue ecosystems. Every processor in a way
+This is also the main entry point for Glue ecosystems. Every service in a way
 or another listens for object events on the message bus and performs additional
-operations accordingly. There are processors that scan the objects and save the
+operations accordingly. There are services that scan the objects and save the
 information collected, others that send texts or notifications if the stored object
 is recognised to be a message, others that logs everything that goes on between the
 users and the store.
@@ -50,8 +50,8 @@ Interfaces
 ----------
 
 To store objects there are two different interfaces available: an HTTP REST API
-with POST, PUT, PATCH, DELETE and GET methods and an AMQP interface thanks to a 
-processor subscribing to a list of topics any module can publish objects to.
+with POST, PUT, PATCH, DELETE and GET methods and a Pub-Sub interface thanks to a 
+service subscribing to a list of topics any module can publish objects to.
 
 ### HTTP API
 
@@ -116,7 +116,7 @@ Examples:
         --url http://127.0.0.1:9210/glued/benchmark/f4b9fc30-7f87-4f4a-9987-5389e19cb1a0 \
         --header 'content-type: application/json'
 
-### AMQP API
+### Pub-Sub API
 
 Main methods:
 
@@ -185,7 +185,7 @@ To run the services you can install the module with the `-g` flag and then run t
 
     $ npm install -g glued-store
     $ glued-store-http
-    $ glued-store-amqp
+    $ glued-store-pubsub
 
 The HTTP server will run by default on port `9210`. Both services will connect to 
 AMQP and RethinkDB on the local machine. To change these options you can use the
@@ -216,7 +216,7 @@ Example:
     $ GLUE_STORE_PORT=8080 GLUE_AMQP=amqp://1.2.3.4 \
         RETHINKDB=/path/to/rethinkdb.conf.json glued-store-http
     $ GLUE_AMQP=amqp://1.2.3.4 \
-        RETHINKDB=/path/to/rethinkdb.conf.json glued-store-amqp
+        RETHINKDB=/path/to/rethinkdb.conf.json glued-store-pubsub
 
 Test
 ----
