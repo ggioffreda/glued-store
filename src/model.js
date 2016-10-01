@@ -4,7 +4,7 @@
  * @param dataLayer
  * @constructor
  */
-function StoreModel (dataLayer) {
+function StoreModel (messageBusChannel, dataLayer) {
   /**
    * Create a type if it doesn't already exists.
    *
@@ -18,7 +18,9 @@ function StoreModel (dataLayer) {
         if (err) return callback(err, null)
         if (tableList.indexOf(type) < 0) {
           dataLayer.tableCreate(domain, type, function (err, results) {
-            callback(err, results ? { action: 'created' } : null)
+            const action = 'created'
+            _publishMessage(domain, type, 'type.' + action, { domain: domain, type: type })
+            callback(err, results ? { action: action } : null)
           })
         } else {
           callback(null, { action: 'none' })
@@ -55,10 +57,12 @@ function StoreModel (dataLayer) {
     dataLayer.insert(domain, type, document, { conflict: 'replace' }, function (err, dbResponse) {
       if (err) callback(err, null)
       else {
-        callback(null, {
-          id: document.id || dbResponse.generated_keys[0],
-          action: dbResponse.inserted > 0 ? 'inserted' : (dbResponse.unchanged > 0 ? 'none' : 'updated')
-        })
+        const id = document.id || dbResponse.generated_keys[0]
+        const action = dbResponse.inserted > 0 ? 'inserted' : (dbResponse.unchanged > 0 ? 'none' : 'updated')
+        if (action !== 'none') {
+          _publishMessage(domain, type, id + '.' + action, document)
+        }
+        callback(null, { id: id, action: action })
       }
     })
   }
@@ -216,7 +220,11 @@ function StoreModel (dataLayer) {
       if (err) callback(err, null)
       else {
         if (dbResponse.deleted === 0) callback(new Error('Object not found'), null)
-        else callback(null, { action: 'deleted' })
+        else {
+          const action = 'deleted'
+          _publishMessage(domain, type, id + '.' + action, { id: id })
+          callback(null, { action: action })
+        }
       }
     })
   }
@@ -273,6 +281,10 @@ function StoreModel (dataLayer) {
     }.bind(this))
     return same
   }.bind(this)
+
+  var _publishMessage = function (domain, type, action, document) {
+    messageBusChannel.publish(['store', domain, type, action].join('.'), document)
+  }
 }
 
 exports.StoreModel = StoreModel

@@ -18,7 +18,7 @@ function StorePubSub () {
 
   this.setUp = function (dependencies) {
     this._channel = dependencies['message-bus']
-    this._model = new StoreModel(dependencies['data-layer'])
+    this._model = new StoreModel(this._channel, dependencies['data-layer'])
 
     this.subscribeHandlers()
   }.bind(this)
@@ -32,9 +32,6 @@ function StorePubSub () {
         // send error to the message bus
       } else {
         cb()
-        if (data.action === 'created') {
-          _publishMessage(domain, type, 'type.created', { domain: domain, type: type })
-        }
       }
     })
   }.bind(this)
@@ -72,7 +69,6 @@ function StorePubSub () {
         // send error to message bus
       } else {
         cb()
-        _buildResponse(domain, type, patch, data)
       }
     })
   }.bind(this)
@@ -87,7 +83,6 @@ function StorePubSub () {
         // send error to the message bus
       } else {
         cb()
-        _buildResponse(domain, type, { id: id }, data)
       }
     })
   }.bind(this)
@@ -110,26 +105,14 @@ function StorePubSub () {
     }
   }
 
-  var _publishMessage = function (domain, type, action, document) {
-    this._channel.publish(['store', domain, type, action].join('.'), new Buffer(JSON.stringify(document)))
-  }.bind(this)
-
   var _storeObject = function (domain, type, document, model, cb) {
     model.storeObject(domain, type, document, function (err, data) {
       if (err) {
         // send error to message bus
       } else {
         cb()
-        _buildResponse(domain, type, document, data)
       }
     })
-  }
-
-  var _buildResponse = function (domain, type, document, data) {
-    var id = data.id
-    if (data.action !== 'none') {
-      _publishMessage(domain, type, id + '.' + data.action, document)
-    }
   }
 }
 

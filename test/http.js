@@ -32,7 +32,7 @@ describe('StoreHttp', function () {
       }
 
       mockMBChannel = { publish: sinon.stub() }
-      model = new m.StoreModel(dataLayer)
+      model = new m.StoreModel(mockMBChannel, dataLayer)
       expressStub = { Router: sinon.stub().returns(express.Router()) }
       controller = new c.StoreHttp(expressStub)
       controller._channel = mockMBChannel
@@ -74,7 +74,7 @@ describe('StoreHttp', function () {
           assert(mockMBChannel.publish.calledOnce)
           assert(mockMBChannel.publish.calledWith(
             ['store', testDatabase, testTable, 'type', 'created'].join('.'),
-            new Buffer(JSON.stringify({ domain: testDatabase, type: testTable }))
+            { domain: testDatabase, type: testTable }
           ))
           done(err)
         })
@@ -116,7 +116,7 @@ describe('StoreHttp', function () {
                 ['store', testDatabase, testTable, document[1].id, 'inserted'].join('.'),
                 mockMBChannel.publish.args[0][0]
               )
-              assert.deepEqual(document[1], JSON.parse(mockMBChannel.publish.args[0][1].toString()))
+              assert.deepEqual(document[1], mockMBChannel.publish.args[0][1])
             }
             assert(mockMBChannel.publish.calledOnce)
             done(err)
@@ -138,7 +138,7 @@ describe('StoreHttp', function () {
                   ['store', testDatabase, testTable, document[1].id, 'updated'].join('.'),
                   mockMBChannel.publish.args[0][0]
                 )
-                assert.deepEqual(document[1], JSON.parse(mockMBChannel.publish.args[0][1].toString()))
+                assert.deepEqual(document[1], mockMBChannel.publish.args[0][1])
               }
               assert(mockMBChannel.publish.calledOnce)
               done(err)
@@ -182,7 +182,7 @@ describe('StoreHttp', function () {
               ['store', testDatabase, testTable, document[1].id, 'inserted'].join('.'),
               mockMBChannel.publish.args[0][0]
             )
-            assert.deepEqual(document[1], JSON.parse(mockMBChannel.publish.args[0][1].toString()))
+            assert.deepEqual(document[1], mockMBChannel.publish.args[0][1])
             assert(mockMBChannel.publish.calledOnce)
             done(err)
           })
@@ -214,7 +214,7 @@ describe('StoreHttp', function () {
               ['store', testDatabase, testTable, document[1].id, 'updated'].join('.'),
               mockMBChannel.publish.args[0][0]
             )
-            assert.deepEqual(document[1], JSON.parse(mockMBChannel.publish.args[0][1].toString()))
+            assert.deepEqual(document[1], mockMBChannel.publish.args[0][1])
             assert(mockMBChannel.publish.calledOnce)
             done(err)
           })
@@ -410,7 +410,7 @@ describe('StoreHttp', function () {
               ['store', testDatabase, testTable, document[1].id, 'deleted'].join('.'),
               mockMBChannel.publish.args[0][0]
             )
-            assert.deepEqual({ id: document[1].id }, JSON.parse(mockMBChannel.publish.args[0][1].toString()))
+            assert.deepEqual({ id: document[1].id }, mockMBChannel.publish.args[0][1])
             assert(mockMBChannel.publish.calledOnce)
             done(err)
           })

@@ -1,7 +1,9 @@
 const assert = require('assert')
+const sinon = require('sinon')
 const m = require('../src/model')
 const testDatabase = 'test'
 const testTable = 'test_table'
+const mockMBChannel = { publish: sinon.stub() }
 
 var dataLayer = null
 var model = null
@@ -18,7 +20,7 @@ describe('StoreModel', function () {
     dataLayer = require('glued-common').dataLayer
     dataLayer.connectModule(function (err, data) {
       connectionError = err
-      model = new m.StoreModel(data)
+      model = new m.StoreModel(mockMBChannel, data)
       if (!err) {
         dataLayer.tableDelete(testDatabase, testTable, function () {
           done()

@@ -5,7 +5,6 @@ const StoreModel = require('./model').StoreModel
 function StoreHttp (express) {
   express = express || require('express')
   this._model = null
-  this._channel = null
   this._server = null
   this._router = null
   this._state = {}
@@ -23,8 +22,7 @@ function StoreHttp (express) {
   }
 
   this.setUp = function (dependencies) {
-    this._channel = dependencies['message-bus']
-    this._model = new StoreModel(dependencies['data-layer'])
+    this._model = new StoreModel(dependencies['message-bus'], dependencies['data-layer'])
 
     this._app = express()
     this._app.use(bodyParser.json())
@@ -46,7 +44,6 @@ function StoreHttp (express) {
         return res.status(404).json({ message: err.message })
       } else {
         if (data.action === 'created') {
-          _publishMessage(domain, type, 'type.created', { domain: domain, type: type })
           return res.status(201).end('')
         }
 
@@ -77,8 +74,9 @@ function StoreHttp (express) {
     }
 
     this._model.patchObject(domain, type, id, patch, function (err, data) {
-      if (err) res.status(404).json({ message: err.message })
-      else {
+      if (err) {
+        res.status(404).json({ message: err.message })
+      } else {
         _storeObjectResponse(res, domain, type, patch, data)
       }
     })
@@ -97,9 +95,9 @@ function StoreHttp (express) {
     const id = req.params.objectId
 
     this._model.deleteObject(domain, type, id, function (err, data) {
-      if (err) res.status(404).json({ message: err.message })
-      else {
-        _publishMessage(domain, type, id + '.' + data.action, { id: id })
+      if (err) {
+        res.status(404).json({ message: err.message })
+      } else {
         res.status(204).end('')
       }
     })
@@ -120,10 +118,6 @@ function StoreHttp (express) {
     return this._router
   }.bind(this)
 
-  var _publishMessage = function (domain, type, action, document) {
-    this._channel.publish(['store', domain, type, action].join('.'), new Buffer(JSON.stringify(document)))
-  }.bind(this)
-
   var _postOrPutObject = function (req, res, document, model) {
     const domain = req.params.objectDomain
     const type = req.params.objectType
@@ -132,8 +126,9 @@ function StoreHttp (express) {
 
   var _storeObject = function (res, domain, type, document, model) {
     model.storeObject(domain, type, document, function (err, data) {
-      if (err) res.status(404).json({ message: err.msg })
-      else {
+      if (err) {
+        res.status(404).json({ message: err.msg })
+      } else {
         _storeObjectResponse(res, domain, type, document, data)
       }
     })
@@ -141,9 +136,6 @@ function StoreHttp (express) {
 
   var _storeObjectResponse = function (res, domain, type, document, data) {
     var id = data.id
-    if (data.action !== 'none') {
-      _publishMessage(domain, type, id + '.' + data.action, document)
-    }
     if (data.action === 'inserted') {
       res.status(201).json({ id: id })
     } else {

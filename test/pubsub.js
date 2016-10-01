@@ -27,7 +27,7 @@ describe('StorePubSub', function () {
       }
 
       mockMBChannel = sinon.stub({ publish: function () { }, subscribe: function () { } })
-      model = new m.StoreModel(dataLayer)
+      model = new m.StoreModel(mockMBChannel, dataLayer)
       processor = new p.StorePubSub()
       processor._channel = mockMBChannel
       processor._model = model
@@ -83,14 +83,14 @@ describe('StorePubSub', function () {
         assert(publishSpy.calledOnce)
         assert(publishSpy.calledWith(
           ['store', testDatabase, testTable, 'type', 'created'].join('.'),
-          new Buffer(JSON.stringify({ domain: testDatabase, type: testTable }))
+          { domain: testDatabase, type: testTable }
         ))
         done()
       })
       if (missingDependencies) return this.skip()
 
       mockMBChannel = { publish: publishSpy }
-      model = new m.StoreModel(dataLayer)
+      model = new m.StoreModel(mockMBChannel, dataLayer)
       processor = new p.StorePubSub()
       processor._channel = mockMBChannel
       processor._model = model
