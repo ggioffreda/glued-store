@@ -224,3 +224,8 @@ Test
 Run the tests with:
 
     $ npm test
+
+License
+-------
+
+This software is distributed under MIT license.
