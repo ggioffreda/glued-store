@@ -1,7 +1,7 @@
 Glue - Store
 ============
 
-Simple interface for storing objects through HTTP, Pub-Sub or RPC.
+Interface for storing objects through HTTP, Pub-Sub or RPC.
 
 [![Build Status](https://travis-ci.org/ggioffreda/glued-store.svg?branch=master)](https://travis-ci.org/ggioffreda/glued-store)
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
@@ -9,8 +9,8 @@ Simple interface for storing objects through HTTP, Pub-Sub or RPC.
 Usage
 -----
 
-This can be used as a standalone library or server for easily storing data into
-RethinkDB from different sources.
+This can be used as a standalone library or micro service for storing data (objects)
+into RethinkDB from any number of sources.
 
 **Example: Using Logstash to centralise your logs into a RethinkDB database**
 
