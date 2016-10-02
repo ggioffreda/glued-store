@@ -25,7 +25,7 @@ function StoreRpc () {
       const domain = request.domain
       const type = request.type
 
-      if (method === 'type') {
+      if (method === 'create') {
         this._store.createType(domain, type, function (err, data) {
           if (err) {
             replier({ error: { message: err.message } })
