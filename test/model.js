@@ -1,6 +1,6 @@
 const assert = require('assert')
 const sinon = require('sinon')
-const m = require('../src/model')
+const m = require('../src/store')
 const testDatabase = 'test'
 const testTable = 'test_table'
 const mockMBChannel = { publish: sinon.stub() }
@@ -15,12 +15,12 @@ const before = mocha.before
 const it = mocha.it
 const after = mocha.after
 
-describe('StoreModel', function () {
+describe('Store', function () {
   before(function (done) {
     dataLayer = require('glued-common').dataLayer
     dataLayer.connectModule(function (err, data) {
       connectionError = err
-      model = new m.StoreModel(mockMBChannel, data)
+      model = new m.Store(mockMBChannel, data)
       if (!err) {
         dataLayer.tableDelete(testDatabase, testTable, function () {
           done()

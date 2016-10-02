@@ -78,7 +78,7 @@ Main methods:
   a message with topic *store.{domain}.{type}.{id}.updated*. No message is
   sent if no change is made. This endpoint accept a list of actions to be
   executed on the requested object, for more information see
-  *StoreModel.patchObject*.
+  *Store.patchObject*.
 
 Other methods:
 
@@ -138,7 +138,7 @@ Main methods:
   a message with topic *store.{domain}.{type}.{id}.updated*. No message is 
   sent if no change is made. This endpoint accept a list of actions to be
   executed on the requested object, for more information see 
-  *StoreModel.patchObject*.
+  *Store.patchObject*.
 
 - `PUBLISH ON *.{domain}.{type}.{id}.delete.store` deletes the specified 
   object and sends a message with topic *store.{domain}.{type}.{id}.deleted*.

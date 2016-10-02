@@ -1,10 +1,10 @@
 const http = require('http')
 const bodyParser = require('body-parser')
-const StoreModel = require('./model').StoreModel
+const Store = require('./store').Store
 
 function StoreHttp (express) {
   express = express || require('express')
-  this._model = null
+  this._store = null
   this._server = null
   this._router = null
   this._state = {}
@@ -22,7 +22,7 @@ function StoreHttp (express) {
   }
 
   this.setUp = function (dependencies) {
-    this._model = new StoreModel(dependencies['message-bus'], dependencies['data-layer'])
+    this._store = new Store(dependencies['message-bus'], dependencies['data-layer'])
 
     this._app = express()
     this._app.use(bodyParser.json())
@@ -39,7 +39,7 @@ function StoreHttp (express) {
     const domain = req.params.objectDomain
     const type = req.params.objectType
 
-    this._model.createType(domain, type, function (err, data) {
+    this._store.createType(domain, type, function (err, data) {
       if (err) {
         return res.status(404).json({ message: err.message })
       } else {
@@ -53,13 +53,13 @@ function StoreHttp (express) {
   }.bind(this)
 
   this.postObjectAction = function (req, res) {
-    _postOrPutObject(req, res, req.body, this._model)
+    _postOrPutObject(req, res, req.body, this._store)
   }.bind(this)
 
   this.putObjectAction = function (req, res) {
     const document = req.body
     document.id = req.params.objectId
-    _postOrPutObject(req, res, document, this._model)
+    _postOrPutObject(req, res, document, this._store)
   }.bind(this)
 
   this.patchObjectAction = function (req, res) {
@@ -73,7 +73,7 @@ function StoreHttp (express) {
       return
     }
 
-    this._model.patchObject(domain, type, id, patch, function (err, data) {
+    this._store.patchObject(domain, type, id, patch, function (err, data) {
       if (err) {
         res.status(404).json({ message: err.message })
       } else {
@@ -83,7 +83,7 @@ function StoreHttp (express) {
   }.bind(this)
 
   this.getObjectAction = function (req, res) {
-    this._model.getObject(req.params.objectDomain, req.params.objectType, req.params.objectId, function (err, document) {
+    this._store.getObject(req.params.objectDomain, req.params.objectType, req.params.objectId, function (err, document) {
       if (err) res.status(404).json({ message: err.message })
       else res.json(document)
     })
@@ -94,7 +94,7 @@ function StoreHttp (express) {
     const type = req.params.objectType
     const id = req.params.objectId
 
-    this._model.deleteObject(domain, type, id, function (err, data) {
+    this._store.deleteObject(domain, type, id, function (err, data) {
       if (err) {
         res.status(404).json({ message: err.message })
       } else {

@@ -1,7 +1,7 @@
-const StoreModel = require('./model').StoreModel
+const Store = require('./store').Store
 
 function StoreRpc () {
-  this._model = null
+  this._store = null
   this._channel = null
 
   this.getName = function () {
@@ -18,7 +18,7 @@ function StoreRpc () {
 
   this.setUp = function (dependencies) {
     this._channel = dependencies['message-bus']
-    this._model = new StoreModel(this._channel, dependencies['data-layer'])
+    this._store = new Store(this._channel, dependencies['data-layer'])
 
     this._channel.getRpc().accept('store_rpc', function (request, replier) {
       const method = request.method
@@ -26,7 +26,7 @@ function StoreRpc () {
       const type = request.type
 
       if (method === 'type') {
-        this._model.createType(domain, type, function (err, data) {
+        this._store.createType(domain, type, function (err, data) {
           if (err) {
             replier({ error: { message: err.message } })
           } else {
@@ -34,7 +34,7 @@ function StoreRpc () {
           }
         })
       } else if (method === 'post') {
-        this._model.storeObject(domain, type, request.object, function (err, data) {
+        this._store.storeObject(domain, type, request.object, function (err, data) {
           if (err) {
             replier({ error: { message: err.message } })
           } else {
@@ -43,7 +43,7 @@ function StoreRpc () {
         })
       } else if (method === 'put') {
         request.object.id = request.id
-        this._model.storeObject(domain, type, request.object, function (err, data) {
+        this._store.storeObject(domain, type, request.object, function (err, data) {
           if (err) {
             replier({ error: { message: err.message } })
           } else {
@@ -59,7 +59,7 @@ function StoreRpc () {
           return
         }
 
-        this._model.patchObject(domain, type, id, patch, function (err, data) {
+        this._store.patchObject(domain, type, id, patch, function (err, data) {
           if (err) {
             replier({ error: { message: err.message } })
           } else {
@@ -69,7 +69,7 @@ function StoreRpc () {
       } else if (method === 'delete') {
         const id = request.id
 
-        this._model.deleteObject(domain, type, id, function (err, data) {
+        this._store.deleteObject(domain, type, id, function (err, data) {
           if (err) {
             replier({ error: { message: err.message } })
           } else {
@@ -79,7 +79,7 @@ function StoreRpc () {
       } else if (method === 'get') {
         const id = request.id
 
-        this._model.getObject(domain, type, id, function (err, document) {
+        this._store.getObject(domain, type, id, function (err, document) {
           if (err) {
             replier({ error: { message: err.message } })
           } else {

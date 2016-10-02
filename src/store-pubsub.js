@@ -1,7 +1,7 @@
-const StoreModel = require('./model').StoreModel
+const Store = require('./store').Store
 
 function StorePubSub () {
-  this._model = null
+  this._store = null
   this._channel = null
 
   this.getName = function () {
@@ -18,7 +18,7 @@ function StorePubSub () {
 
   this.setUp = function (dependencies) {
     this._channel = dependencies['message-bus']
-    this._model = new StoreModel(this._channel, dependencies['data-layer'])
+    this._store = new Store(this._channel, dependencies['data-layer'])
 
     this.subscribeHandlers()
   }.bind(this)
@@ -27,7 +27,7 @@ function StorePubSub () {
     const domain = topicKeys[1]
     const type = topicKeys[2]
 
-    this._model.createType(domain, type, function (err, data) {
+    this._store.createType(domain, type, function (err, data) {
       if (err) {
         // send error to the message bus
       } else {
@@ -40,7 +40,7 @@ function StorePubSub () {
     const domain = topicKeys[1]
     const type = topicKeys[2]
 
-    _storeObject(domain, type, message, this._model, cb)
+    _storeObject(domain, type, message, this._store, cb)
   }.bind(this)
 
   this.putObjectHandler = function (topicKeys, message, cb) {
@@ -49,7 +49,7 @@ function StorePubSub () {
 
     message.id = topicKeys[3]
 
-    _storeObject(domain, type, message, this._model, cb)
+    _storeObject(domain, type, message, this._store, cb)
   }.bind(this)
 
   this.patchObjectHandler = function (topicKeys, message, cb) {
@@ -64,7 +64,7 @@ function StorePubSub () {
       return
     }
 
-    this._model.patchObject(domain, type, id, patch, function (err, data) {
+    this._store.patchObject(domain, type, id, patch, function (err, data) {
       if (err) {
         // send error to message bus
       } else {
@@ -78,7 +78,7 @@ function StorePubSub () {
     const type = topicKeys[2]
     const id = topicKeys[3]
 
-    this._model.deleteObject(domain, type, id, function (err, data) {
+    this._store.deleteObject(domain, type, id, function (err, data) {
       if (err) {
         // send error to the message bus
       } else {

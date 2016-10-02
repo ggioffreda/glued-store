@@ -1,8 +1,8 @@
 const assert = require('assert')
 const sinon = require('sinon')
 const dataLayer = require('glued-common').dataLayer
-const m = require('../src/model')
-const p = require('../src/pubsub')
+const m = require('../src/store')
+const p = require('../src/store-pubsub')
 const testDatabase = 'test'
 const testTable = 'test_table'
 
@@ -27,10 +27,10 @@ describe('StorePubSub', function () {
       }
 
       mockMBChannel = sinon.stub({ publish: function () { }, subscribe: function () { } })
-      model = new m.StoreModel(mockMBChannel, dataLayer)
+      model = new m.Store(mockMBChannel, dataLayer)
       processor = new p.StorePubSub()
       processor._channel = mockMBChannel
-      processor._model = model
+      processor._store = model
 
       processor.subscribeHandlers()
 
@@ -90,10 +90,10 @@ describe('StorePubSub', function () {
       if (missingDependencies) return this.skip()
 
       mockMBChannel = { publish: publishSpy }
-      model = new m.StoreModel(mockMBChannel, dataLayer)
+      model = new m.Store(mockMBChannel, dataLayer)
       processor = new p.StorePubSub()
       processor._channel = mockMBChannel
-      processor._model = model
+      processor._store = model
     }
 
     it('should create a new type, and send a message to the exchange', function (done) {

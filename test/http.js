@@ -2,9 +2,9 @@ const assert = require('assert')
 const sinon = require('sinon')
 const bodyParser = require('body-parser')
 const dataLayer = require('glued-common').dataLayer
-const m = require('../src/model')
+const m = require('../src/store')
 const express = require('express')
-const c = require('../src/http')
+const c = require('../src/store-http')
 const testDatabase = 'test'
 const testTable = 'test_table'
 const request = require('supertest')
@@ -32,11 +32,11 @@ describe('StoreHttp', function () {
       }
 
       mockMBChannel = { publish: sinon.stub() }
-      model = new m.StoreModel(mockMBChannel, dataLayer)
+      model = new m.Store(mockMBChannel, dataLayer)
       expressStub = { Router: sinon.stub().returns(express.Router()) }
       controller = new c.StoreHttp(expressStub)
       controller._channel = mockMBChannel
-      controller._model = model
+      controller._store = model
 
       app = express()
       app.use(bodyParser.json())

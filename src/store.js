@@ -4,7 +4,7 @@
  * @param dataLayer
  * @constructor
  */
-function StoreModel (messageBusChannel, dataLayer) {
+function Store (messageBusChannel, dataLayer) {
   /**
    * Create a type if it doesn't already exists.
    *
@@ -287,4 +287,4 @@ function StoreModel (messageBusChannel, dataLayer) {
   }
 }
 
-exports.StoreModel = StoreModel
+exports.Store = Store
