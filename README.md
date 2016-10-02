@@ -185,7 +185,7 @@ mb.connectModule(function (err, messageBusChannel) {
 
 The store listens for RPC calls on the `store_rpc` queue. Each request must contain:
 
-- the **type**, one in:
+- the **method**, one in:
   
   - *create* to create a new type of object;
   
