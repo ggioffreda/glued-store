@@ -240,11 +240,12 @@ You can install this library using `npm`:
     $ npm install --save glued-store
 
 To run the services you can install the module with the `-g` flag and then run the
-`glued-store-http` and `glued-store-amqp` commands:
+`glued-store-http`, `glued-store-pubsub` and `glued-store-rpc` commands:
 
     $ npm install -g glued-store
     $ glued-store-http
     $ glued-store-pubsub
+    $ glued-store-rpc
 
 The HTTP server will run by default on port `9210`. Both services will connect to 
 AMQP and RethinkDB on the local machine. To change these options you can use the
@@ -276,6 +277,8 @@ Example:
         RETHINKDB=/path/to/rethinkdb.conf.json glued-store-http
     $ GLUE_AMQP=amqp://1.2.3.4 \
         RETHINKDB=/path/to/rethinkdb.conf.json glued-store-pubsub
+    $ GLUE_AMQP=amqp://1.2.3.4 \
+        RETHINKDB=/path/to/rethinkdb.conf.json glued-store-rpc
 
 Test
 ----
