@@ -49,9 +49,17 @@ users and the store.
 Interfaces
 ----------
 
-To store objects there are two different interfaces available: an HTTP REST API
-with POST, PUT, PATCH, DELETE and GET methods and a Pub-Sub interface thanks to a 
-service subscribing to a list of topics any module can publish objects to.
+To store objects there are many interfaces available:
+
+- an **HTTP REST API** with *POST*, *PUT*, *PATCH*, *DELETE* and *GET* methods;
+
+- a **Pub-Sub API** topic based over the topics *#.post.store*,
+  *#.put.store*, *#.patch.store*, *#.delete.store*, *#.create.store*;
+
+- an **RPC API** through the *store_rpc* queue, accepts *create*, *post*, *put*,
+  *patch*, *delete* and *get* request;
+
+- a **Javascript API** for direct and quick access to the underlying methods.
 
 ### HTTP API
 
@@ -172,6 +180,57 @@ mb.connectModule(function (err, messageBusChannel) {
   messageBusChannel.publish('my_package.music.song.a9d71caa-b946-4d0b-a5fb-3d95a6f0a3f1.delete', {});
 });
 ```
+
+### RPC API
+
+The store listens for RPC calls on the `store_rpc` queue. Each request must contain:
+
+- the **type**, one in:
+  
+  - *create* to create a new type of object;
+  
+  - *post* to store a new object, if the object has an ID it will replace a previous
+    object with the same ID if any;
+    
+  - *put* to store an object with a known ID;
+  
+  - *patch* to patch an existing object, check `Store.patchObject` for more information;
+  
+  - *delete* to delete an object;
+   
+  - *get* to retrieve an object by ID;
+
+- the **domain** of the object;
+
+- the **type** of the object;
+
+- the **id** of the object, only for *put*, *patch*, *delete* and *get* requests;
+
+- the **object** to be stored, only for *post*, *put* and *patch* requests.
+
+Check the [Glue - Message Bus](https://github.com/ggioffreda/glued-message-bus) for an
+easy way of interacting between services through RPC.
+
+### JavaScript API
+
+You can initialise the store yourself and use its public interface directly. The
+available methods are:
+
+- **createType**(domain, type, callback), to create a new object type;
+
+- **storeObject**(domain, type, document, callback), to store an object. If the object
+  doesn't have an ID it'll get one once stored;
+  
+- **patchObject**(domain, type, id, patch, callback), to patch an object. See inline
+  documentation for more information;
+
+- **deleteObject**(domain, type, id, callback), to delete an object;
+
+- **getObject**(domain, type, id, callback), to retrieve an object;
+
+- **diffObjects**(a, b), computes the differences between object `a` and object `b`;
+
+- **equalObjects**(a, b), checks if the two given objects, `a` and `b` are equal.
 
 Installation
 ------------
