@@ -22,7 +22,8 @@
   },
   "bin": {
     "glued-store-http": "bin/service-http.js",
-    "glued-store-pubsub": "bin/service-pubsub.js"
+    "glued-store-pubsub": "bin/service-pubsub.js",
+    "glued-store-rpc": "bin/service-rpc.js"
   },
   "repository": {
     "type": "git",
