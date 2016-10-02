@@ -1,6 +1,6 @@
 {
   "name": "glued-store",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Interface for storing objects through HTTP, Pub-Sub or RPC",
   "main": "index.js",
   "dependencies": {
