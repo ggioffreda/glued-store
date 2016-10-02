@@ -4,4 +4,4 @@ const StorePubSub = require('../src/store-pubsub').StorePubSub
 const ServiceManager = require('glued-common').ServiceManager
 const manager = new ServiceManager()
 
-manager.load(new StorePubSub())
+manager.load(new StorePubSub(), require('../package.json'))
