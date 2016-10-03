@@ -96,12 +96,12 @@ function StorePubSub () {
   }
 
   var _filterKeyAndMessage = function (consumer) {
-    return function (key, rawMessage, cb) {
+    return function (key, message, cb) {
       if (key === null) {
         // do nothing
         return cb()
       }
-      return consumer(key.split('.'), JSON.parse(rawMessage.toString()), cb)
+      return consumer(key.split('.'), message, cb)
     }
   }
 
