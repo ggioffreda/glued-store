@@ -1,6 +1,8 @@
 const Store = require('./store').Store
 
 function StoreRpc () {
+  const self = this
+
   this._store = null
   this._channel = null
 
@@ -17,16 +19,16 @@ function StoreRpc () {
   }
 
   this.setUp = function (dependencies) {
-    this._channel = dependencies['message-bus']
-    this._store = new Store(this._channel, dependencies['data-layer'])
+    self._channel = dependencies['message-bus']
+    self._store = new Store(self._channel, dependencies['data-layer'])
 
-    this._channel.getRpc().accept('store_rpc', function (request, rawRequest, replier) {
+    self._channel.getRpc().accept('store_rpc', function (request, rawRequest, replier) {
       const method = request.method
       const domain = request.domain
       const type = request.type
 
       if (method === 'create') {
-        this._store.createType(domain, type, function (err, data) {
+        self._store.createType(domain, type, function (err, data) {
           if (err) {
             replier({ error: { message: err.message } })
           } else {
@@ -34,7 +36,7 @@ function StoreRpc () {
           }
         })
       } else if (method === 'post') {
-        this._store.storeObject(domain, type, request.object, function (err, data) {
+        self._store.storeObject(domain, type, request.object, function (err, data) {
           if (err) {
             replier({ error: { message: err.message } })
           } else {
@@ -43,7 +45,7 @@ function StoreRpc () {
         })
       } else if (method === 'put') {
         request.object.id = request.id
-        this._store.storeObject(domain, type, request.object, function (err, data) {
+        self._store.storeObject(domain, type, request.object, function (err, data) {
           if (err) {
             replier({ error: { message: err.message } })
           } else {
@@ -59,7 +61,7 @@ function StoreRpc () {
           return
         }
 
-        this._store.patchObject(domain, type, id, patch, function (err, data) {
+        self._store.patchObject(domain, type, id, patch, function (err, data) {
           if (err) {
             replier({ error: { message: err.message } })
           } else {
@@ -69,7 +71,7 @@ function StoreRpc () {
       } else if (method === 'delete') {
         const id = request.id
 
-        this._store.deleteObject(domain, type, id, function (err, data) {
+        self._store.deleteObject(domain, type, id, function (err, data) {
           if (err) {
             replier({ error: { message: err.message } })
           } else {
@@ -79,7 +81,7 @@ function StoreRpc () {
       } else if (method === 'get') {
         const id = request.id
 
-        this._store.getObject(domain, type, id, function (err, document) {
+        self._store.getObject(domain, type, id, function (err, document) {
           if (err) {
             replier({ error: { message: err.message } })
           } else {
@@ -87,8 +89,8 @@ function StoreRpc () {
           }
         })
       }
-    }.bind(this))
-  }.bind(this)
+    })
+  }
 }
 
 module.exports.StoreRpc = StoreRpc
