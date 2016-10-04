@@ -73,70 +73,70 @@ function Store (messageBusChannel, dataLayer) {
    * A patch can must contain at least an item and can contain many of them. A patch item looks like so:
    *
    * {
-     *      action: "update",
-     *      patch: {
-     *          first_field_to_update: "new value",
-     *          second_field_to_update: "another new value",
-     *          another_field: {
-     *              third_field_to_update: "a new value again"
-     *          }
-     *      }
-     * }
+   *      action: "update",
+   *      patch: {
+   *          first_field_to_update: "new value",
+   *          second_field_to_update: "another new value",
+   *          another_field: {
+   *              third_field_to_update: "a new value again"
+   *          }
+   *      }
+   * }
    *
    * Supported action are "update" and "delete", if the action is "delete" you just need to indicate the fields and
    * set their value to null, if you set the value to anything else than null the property will be deleted anyway and
    * the value provided will be ignored. Example:
    *
    * {
-     *      action: "delete",
-     *      patch: {
-     *          first_field_to_delete: null,
-     *          another_field: {
-     *              second_field_to_delete: "this value will be ignored, is equivalent to using null"
-     *          }
-     *      }
-     * }
+   *      action: "delete",
+   *      patch: {
+   *          first_field_to_delete: null,
+   *          another_field: {
+   *              second_field_to_delete: "this value will be ignored, is equivalent to using null"
+   *          }
+   *      }
+   * }
    *
    * You can provide multiple items and they will be executed in order. For example if you want to replace an object
    * contained in a property at once, instead of replacing the nested properties you can delete the property first
    * and then assign the new value. Example:
    *
    * {
-     *      id: "9285",
-     *      name: "John",
-     *      contact: {
-     *          email: "john.doe@example.com",
-     *          phone: "1234567890"
-     *      }
-     * }
+   *      id: "9285",
+   *      name: "John",
+   *      contact: {
+   *          email: "john.doe@example.com",
+   *          phone: "1234567890"
+   *      }
+   * }
    *
    * John has lost his phone and changed the email address, patching the document with:
    *
    * {
-     *      items: [ {
-     *          action: "update",
-     *          patch: {
-     *              contact: { email: "new.john.doe@example.com" }
-     *          }
-     *      } ]
-     * }
+   *      items: [ {
+   *          action: "update",
+   *          patch: {
+   *              contact: { email: "new.john.doe@example.com" }
+   *          }
+   *      } ]
+   * }
    *
    * Will not clear his phone number, it'll just update his email address. But you can clear the property "contact"
    * first and then update it's "email" property.
    *
    * {
-     *      items: [ {
-     *          action: "delete",
-     *          patch: {
-     *              contact: null
-     *          }
-     *      }, {
-     *          action: "update",
-     *          patch: {
-     *              contact: { email: "new.john.doe@example.com" }
-     *          }
-     *      } ]
-     * }
+   *      items: [ {
+   *          action: "delete",
+   *          patch: {
+   *              contact: null
+   *          }
+   *      }, {
+   *          action: "update",
+   *          patch: {
+   *              contact: { email: "new.john.doe@example.com" }
+   *          }
+   *      } ]
+   * }
    *
    * @param domain
    * @param type
