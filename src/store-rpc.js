@@ -20,7 +20,7 @@ function StoreRpc () {
     this._channel = dependencies['message-bus']
     this._store = new Store(this._channel, dependencies['data-layer'])
 
-    this._channel.getRpc().accept('store_rpc', function (request, replier) {
+    this._channel.getRpc().accept('store_rpc', function (request, rawRequest, replier) {
       const method = request.method
       const domain = request.domain
       const type = request.type
