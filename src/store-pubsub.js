@@ -96,7 +96,7 @@ function StorePubSub () {
   }
 
   var _filterKeyAndMessage = function (consumer) {
-    return function (key, message, cb) {
+    return function (key, message, rawMessage, cb) {
       if (key === null) {
         // do nothing
         return cb()
