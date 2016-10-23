@@ -26,6 +26,7 @@ function StoreRpc () {
       const method = request.method
       const domain = request.domain
       const type = request.type
+      var id
 
       if (method === 'create') {
         self._store.createType(domain, type, function (err, data) {
@@ -53,7 +54,7 @@ function StoreRpc () {
           }
         })
       } else if (method === 'patch') {
-        const id = request.id
+        id = request.id
         const patch = request.object
 
         if (!patch.items || !patch.items.length) {
@@ -69,7 +70,7 @@ function StoreRpc () {
           }
         })
       } else if (method === 'delete') {
-        const id = request.id
+        id = request.id
 
         self._store.deleteObject(domain, type, id, function (err, data) {
           if (err) {
@@ -79,7 +80,7 @@ function StoreRpc () {
           }
         })
       } else if (method === 'get') {
-        const id = request.id
+        id = request.id
 
         self._store.getObject(domain, type, id, function (err, document) {
           if (err) {
