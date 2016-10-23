@@ -101,7 +101,20 @@ function StorePubSub () {
         // do nothing
         return cb()
       }
-      return consumer(key.split('.'), message, cb)
+
+      // pre-process the routing key to make sure it's not dodgy
+      var routingKeys = key.split('.')
+      if (routingKeys.length === 5 &&
+        (routingKeys[4] !== 'store' || ['create', 'post'].indexOf(routingKeys[3]) === -1)) {
+        return cb()
+      } else if (routingKeys.length === 6 &&
+        (routingKeys[5] !== 'store' || ['put', 'patch', 'delete'].indexOf(routingKeys[4]) === -1)) {
+        return cb()
+      } else if (routingKeys.length !== 5 && routingKeys.length !== 6) {
+        return cb()
+      }
+
+      return consumer(routingKeys, message, cb)
     }
   }
 
