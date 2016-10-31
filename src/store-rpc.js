@@ -94,6 +94,8 @@ function StoreRpc () {
             replier({ data: document })
           }
         })
+      } else {
+        replier({ error: { message: 'Unknown method "' + method + '"' } })
       }
     })
   }
