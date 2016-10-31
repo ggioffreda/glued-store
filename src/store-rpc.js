@@ -28,6 +28,11 @@ function StoreRpc () {
       const type = request.type
       var id
 
+      if (!request.id && ['create', 'post'].indexOf(method) === -1) {
+        replier({ error: { message: 'Invalid ID, or none provided for "' + method + '" method' } })
+        return
+      }
+
       if (method === 'create') {
         self._store.createType(domain, type, function (err, data) {
           if (err) {
